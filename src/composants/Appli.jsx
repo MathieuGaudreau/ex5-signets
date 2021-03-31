@@ -66,7 +66,7 @@ export default function Appli() {
 
               <OrdreDossier triDossier={triDossier} />
 
-              <ListeDossiers utilisateur={utilisateur} etatDossiers={etatDossiers} />
+              <ListeDossiers utilisateur={utilisateur} etatDossiers={etatDossiers} triDossier={triDossier} />
               <AjouterDossier ouvert={ouvertAD} setOuvert={setOuvertAD} gererAjout={gererAjouter} />
               <Fab onClick={() => setOuvertAD(true)} className="ajoutRessource" color="primary" aria-label="Ajouter dossier">
                 <AddIcon />
