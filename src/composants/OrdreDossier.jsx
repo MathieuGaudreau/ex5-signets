@@ -10,11 +10,11 @@ export default function OrdreDossier({ triDossier }) {
     <div className="OrdreDossier">
       <InputLabel id="demo-simple-select-label">Ordre des dossiers</InputLabel>
       <Select
+      defaultValue={0}
         labelId="demo-simple-select-label"
         id="demo-simple-select"
         value={ordre}
-        defaultValue={0}
-        onChange={(e) => setOrdre(e.target.value)}
+        onChange={(i) => setOrdre(i.target.value)}
       >
         <MenuItem value={0}>
           Date de modification descendante
