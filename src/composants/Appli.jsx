@@ -8,26 +8,13 @@ import { useEffect, useState } from 'react';
 import AjouterDossier from './AjouterDossier';
 import * as crudDossiers from '../services/crud-dossiers'
 import * as crudUtilisateurs from '../services/crud-utilisateurs';
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
+import OrdreDossier from './OrdreDossier';
 
 
 export default function Appli() {
+
+  const triDossier = useState(0);
+
   // État de l'utilisateur (pas connecté = null / connecté = objet FB-Auth spécial)
   const [utilisateur, setUtilisateur] = useState(null);
 
@@ -38,20 +25,11 @@ export default function Appli() {
   // État de la boîte de dialogue "Ajout Dossier" (ouverte = true / fermée = false)
   const [ouvertAD, setOuvertAD] = useState(false);
 
-  const classes = useStyles();
-
-  const [ordre, setOrdre] = React.useState('');
-
-
-  const handleChange = (event) => {
-    setOrdre(event.target.value);
-  };
   // Observer le changement d'état de la connexion utilisateur (FB-Auth)
   // Remarquez que ce code est dans un useEffect() car on veut l'exécuter 
   // UNE SEULE FOIS (regardez le tableau des 'deps' - dépendances) et ceci 
   // APRÈS l'affichage du composant
   useEffect(() => crudUtilisateurs.observerConnexion(setUtilisateur), []);
-
 
   /**
    * Gérer la soumission du formulaire pour ajouter un nouveau dossier
@@ -83,22 +61,11 @@ export default function Appli() {
         utilisateur ?
           <>
             <Entete utilisateur={utilisateur} />
+
             <section className="contenu-principal">
-              <div>
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="demo-simple-select-label">Ordre de dossier</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={ordre}
-                    onChange={handleChange}
-                  >
-                    <MenuItem value={10}>Date de modification descendante</MenuItem>
-                    <MenuItem    value={20}>Nom de dossier alphabétique ascendant</MenuItem>
-                    <MenuItem value={30}>Nom de dossier alphabétique descendant</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
+
+              <OrdreDossier triDossier={triDossier} />
+
               <ListeDossiers utilisateur={utilisateur} etatDossiers={etatDossiers} />
               <AjouterDossier ouvert={ouvertAD} setOuvert={setOuvertAD} gererAjout={gererAjouter} />
               <Fab onClick={() => setOuvertAD(true)} className="ajoutRessource" color="primary" aria-label="Ajouter dossier">

@@ -21,16 +21,29 @@ export async function creer(uid, dossier) {
  * @param {String} uid identifiant d'utilisateur Firebase
  * @returns {Promise<any[]>} Promesse avec le tableau des documents de dossiers
  */
-export async function lireTout(uid) {
+export async function lireTout(uid, typeOrdre) {
   const dossiers = [];
+
+  const ordreDeTri = [
+    {
+      element: "datemodif",
+      tri: "desc",
+    },
+    {
+      element: "nom",
+      tri: "asc",
+    },
+    {
+      element: "nom",
+      tri: "desc",
+    }
+  ]
   /************************************************************** Exercice #5 : question A **************************/
   // Modifier très légèrement la ligne suivante
-  const reponse = await firestore.collection(utilRef).doc(uid).collection(dossRef).orderBy("datemodif", "desc").get();
-
-
+  const reponse = await firestore.collection(utilRef).doc(uid).collection(dossRef).orderBy(ordreDeTri[typeOrdre].element, ordreDeTri[typeOrdre].tri).get();
   reponse.forEach(
     doc => {
-      dossiers.push({id: doc.id, ...doc.data()})
+      dossiers.push({ id: doc.id, ...doc.data() })
     }
   );
   return dossiers;
@@ -50,10 +63,6 @@ export async function supprimer(uid, idd) {
   return await firestore.collection(utilRef).doc(uid).collection(dossRef).doc(idd).delete();
 }
 
-export async function trierParNom(uid) {
-await firestore.collection(utilRef).doc(uid).collection(dossRef).orderBy("nom").get();
-}
-
 /**
  * Modifier un dossier de l'utilisateur connecté (pas implémenté dans cet exercice)
  * @param {String} uid identifiant d'utilisateur Firebase 
@@ -61,7 +70,7 @@ await firestore.collection(utilRef).doc(uid).collection(dossRef).orderBy("nom").
  * @param {Object} dossier document à modifier dans la collection des dossiers
  * @returns {Promise<null>} Promesse confirmant la mise à jour
  */
- export async function modifier(uid, did, dossier) {
+export async function modifier(uid, did, dossier) {
   // Cadeau : à compléter pendant vos vacances d'été ;-)
   return true;
 }
